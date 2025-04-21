@@ -1,11 +1,10 @@
-import os
-from flask_mysqldb import MySQL
-from flask import Flask
+import pymysql
 
-def init_db(app: Flask):
-    app.config['MYSQL_HOST'] = os.getenv("MYSQL_HOST", "localhost")
-    app.config['MYSQL_USER'] = os.getenv("MYSQL_USER", "root")
-    app.config['MYSQL_PASSWORD'] = os.getenv("MYSQL_PASSWORD", "")
-    app.config['MYSQL_DB'] = os.getenv("MYSQL_DB", "clothing_store")
-
-    return MySQL(app)
+def get_connection():
+    return pymysql.connect(
+        host='localhost',
+        user='root',
+        password='',  # Replace with your actual MySQL password
+        db='DB_Project',
+        cursorclass=pymysql.cursors.DictCursor
+    )
