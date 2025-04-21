@@ -39,7 +39,10 @@ function Orders() {
   };
 
   const handleEdit = o => {
-    setForm({ customer_id: o.customer_id, order_date: o.order_date.slice(0, 10) });
+    setForm({
+        customer_id: o.customer_id,
+        order_date: o.order_date ? o.order_date.slice(0, 10) : '',
+      });
     setEditingId(o.order_id);
   };
 
@@ -55,7 +58,7 @@ function Orders() {
         <select name="customer_id" value={form.customer_id} onChange={handleChange} required>
           <option value="">Select Customer</option>
           {customers.map(c => (
-            <option key={c.customer_id} value={c.customer_id}>{c.name}</option>
+            <option key={c.CustomerID} value={c.CustomerID}>{c.Name}</option>
           ))}
         </select>
         <input name="order_date" type="date" value={form.order_date} onChange={handleChange} required />
@@ -71,8 +74,8 @@ function Orders() {
           {orders.map(o => (
             <tr key={o.order_id}>
               <td>{o.order_id}</td>
-              <td>{o.customer_id}</td>
-              <td>{o.order_date.slice(0, 10)}</td>
+              <td>{o.CustomerID}</td>
+              <td>{o.order_date ? o.order_date.slice(0, 10) : 'N/A'}</td>
               <td>
                 <button onClick={() => handleEdit(o)}>Edit</button>
                 <button onClick={() => handleDelete(o.order_id)}>Delete</button>
