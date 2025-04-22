@@ -9,6 +9,7 @@ function Orders() {
 
   const fetchOrders = async () => {
     const res = await api.get('/orders');
+    console.log("Orders", res.data);
     setOrders(res.data);
   };
 
@@ -40,10 +41,10 @@ function Orders() {
 
   const handleEdit = o => {
     setForm({
-        customer_id: o.customer_id,
-        order_date: o.order_date ? o.order_date.slice(0, 10) : '',
+        customer_id: o.CustomerID,
+        order_date: o.OrderDate ? o.OrderDate : '',
       });
-    setEditingId(o.order_id);
+    setEditingId(o.OrderID);
   };
 
   const handleDelete = async id => {
@@ -68,17 +69,17 @@ function Orders() {
 
       <table border="1" cellPadding="8" style={{ marginTop: '20px', width: '100%' }}>
         <thead>
-          <tr><th>ID</th><th>Customer</th><th>Date</th><th>Actions</th></tr>
+          <tr><th>Order ID</th><th>Customer ID</th><th>Date</th><th>Actions</th></tr>
         </thead>
         <tbody>
           {orders.map(o => (
-            <tr key={o.order_id}>
-              <td>{o.order_id}</td>
+            <tr key={o.OrderID}>
+              <td>{o.OrderID}</td>
               <td>{o.CustomerID}</td>
-              <td>{o.order_date ? o.order_date.slice(0, 10) : 'N/A'}</td>
+              <td>{o.OrderDate ? o.OrderDate : 'N/A'}</td>
               <td>
                 <button onClick={() => handleEdit(o)}>Edit</button>
-                <button onClick={() => handleDelete(o.order_id)}>Delete</button>
+                <button onClick={() => handleDelete(o.OrderID)}>Delete</button>
               </td>
             </tr>
           ))}

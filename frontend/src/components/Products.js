@@ -8,6 +8,7 @@ function Products() {
 
   const fetchProducts = async () => {
     const res = await api.get('/products');
+    console.log(res.data);
     setProducts(res.data);
   };
 
@@ -32,8 +33,8 @@ function Products() {
   };
 
   const handleEdit = p => {
-    setForm({ name: p.name, price: p.price, stock_quantity: p.stock_quantity });
-    setEditingId(p.product_id);
+    setForm({ name: p.Name, price: p.Price, stock_quantity: p.StockQuantity });
+    setEditingId(p.ProductID);
   };
 
   const handleDelete = async id => {
@@ -60,14 +61,14 @@ function Products() {
         </thead>
         <tbody>
           {products.map(p => (
-            <tr key={p.product_id}>
-              <td>{p.product_id}</td>
-              <td>{p.name}</td>
-              <td>${p.price}</td>
-              <td>{p.stock_quantity}</td>
+            <tr key={p.ProductID}>
+              <td>{p.ProductID}</td>
+              <td>{p.Name}</td>
+              <td>${p.Price}</td>
+              <td>{p.StockQuantity}</td>
               <td>
                 <button onClick={() => handleEdit(p)}>Edit</button>
-                <button onClick={() => handleDelete(p.product_id)}>Delete</button>
+                <button onClick={() => handleDelete(p.ProductID)}>Delete</button>
               </td>
             </tr>
           ))}

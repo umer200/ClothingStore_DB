@@ -14,6 +14,9 @@ function OrderDetails() {
       api.get('/products'),
       api.get('/orders')
     ]);
+    console.log("OrderDetails: ", dRes.data)
+    console.log("Product: ", pRes.data)
+    console.log("Order: ", oRes.data)
     setDetails(dRes.data);
     setProducts(pRes.data);
     setOrders(oRes.data);
@@ -41,12 +44,12 @@ function OrderDetails() {
 
   const handleEdit = d => {
     setForm({
-      order_id: d.order_id,
-      product_id: d.product_id,
-      quantity: d.quantity,
-      subtotal: d.subtotal
+      order_id: d.OrderID,
+      product_id: d.ProductID,
+      quantity: d.Quantity,
+      subtotal: d.Subtotal
     });
-    setEditingId(d.id);
+    setEditingId(d.OrderDetailID);
   };
 
   const handleDelete = async id => {
@@ -61,13 +64,13 @@ function OrderDetails() {
         <select name="order_id" value={form.order_id} onChange={handleChange} required>
           <option value="">Select Order</option>
           {orders.map(o => (
-            <option key={o.order_id} value={o.order_id}>Order #{o.order_id}</option>
+            <option key={o.OrderID} value={o.OrderID}>Order #{o.OrderID}</option>
           ))}
         </select>
         <select name="product_id" value={form.product_id} onChange={handleChange} required>
           <option value="">Select Product</option>
           {products.map(p => (
-            <option key={p.product_id} value={p.product_id}>{p.name}</option>
+            <option key={p.ProductID} value={p.ProductID}>{p.Name}</option>
           ))}
         </select>
         <input name="quantity" type="number" placeholder="Quantity" value={form.quantity} onChange={handleChange} required />
@@ -78,22 +81,26 @@ function OrderDetails() {
 
       <table border="1" cellPadding="8" style={{ marginTop: '20px', width: '100%' }}>
         <thead>
-          <tr><th>ID</th><th>Order</th><th>Product</th><th>Qty</th><th>Subtotal</th><th>Actions</th></tr>
+          <tr><th>Order Detail ID</th><th>Order ID</th><th>Product</th><th>Qty</th><th>Subtotal</th><th>Actions</th></tr>
         </thead>
         <tbody>
-          {details.map(d => (
-            <tr key={d.id}>
-              <td>{d.id}</td>
-              <td>{d.order_id}</td>
-              <td>{d.product_id}</td>
-              <td>{d.quantity}</td>
-              <td>${d.subtotal}</td>
+          {details.map(d => {
+            const product = products.find(p => p.ProductID === d.ProductID);
+            // const order =
+            return(
+            <tr key={d.OrderDetailID}>
+              <td>{d.OrderDetailID}</td>
+              <td>{d.OrderID}</td>
+              <td>{product.Name}</td>
+              <td>{d.Quantity}</td>
+              <td>${d.Subtotal}</td>
               <td>
                 <button onClick={() => handleEdit(d)}>Edit</button>
-                <button onClick={() => handleDelete(d.id)}>Delete</button>
+                <button onClick={() => handleDelete(d.OrderDetailID)}>Delete</button>
               </td>
             </tr>
-          ))}
+            );
+              })}
         </tbody>
       </table>
     </div>

@@ -9,6 +9,7 @@ function Customers() {
   // Fetch all customers
   const fetchCustomers = async () => {
     const res = await api.get('/customers');
+    console.log(res.data);
     setCustomers(res.data);
   };
 
@@ -35,8 +36,8 @@ function Customers() {
   };
 
   const handleEdit = customer => {
-    setForm({ name: customer.name, email: customer.email, phone: customer.phone });
-    setEditingId(customer.customer_id);
+    setForm({ name: customer.Name, email: customer.Email, phone: customer.Phone });
+    setEditingId(customer.CustomerID);
   };
 
   const handleDelete = async id => {
@@ -66,14 +67,14 @@ function Customers() {
         </thead>
         <tbody>
           {customers.map(c => (
-            <tr key={c.customer_id}>
-              <td>{c.customer_id}</td>
-              <td>{c.name}</td>
-              <td>{c.email}</td>
-              <td>{c.phone}</td>
+            <tr key={c.CustomerID}>
+              <td>{c.CustomerID}</td>
+              <td>{c.Name}</td>
+              <td>{c.Email}</td>
+              <td>{c.Phone}</td>
               <td>
                 <button onClick={() => handleEdit(c)}>Edit</button>
-                <button onClick={() => handleDelete(c.customer_id)}>Delete</button>
+                <button onClick={() => handleDelete(c.CustomerID)}>Delete</button>
               </td>
             </tr>
           ))}
