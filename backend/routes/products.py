@@ -19,7 +19,7 @@ def get_product(product_id):
     conn = get_connection()
     try:
         with conn.cursor() as cur:
-            cur.execute("SELECT * FROM Products WHERE product_id = %s", (product_id,))
+            cur.execute("SELECT * FROM Products WHERE ProductID = %s", (product_id,))
             row = cur.fetchone()
         if row:
             return jsonify(row), 200
@@ -35,8 +35,8 @@ def create_product():
     try:
         with conn.cursor() as cur:
             cur.execute(
-                "INSERT INTO Products (name, price, stock_quantity) VALUES (%s, %s, %s)",
-                (data['name'], data['price'], data['stock_quantity'])
+                "INSERT INTO Products (ProductID, Name, Price, StockQuantity) VALUES (%s, %s, %s, %s)",
+                (int(data['id']), data['name'], data['price'], data['stock_quantity'])
             )
             conn.commit()
             new_id = cur.lastrowid
@@ -51,7 +51,7 @@ def update_product(product_id):
     try:
         with conn.cursor() as cur:
             cur.execute(
-                "UPDATE Products SET name = %s, price = %s, stock_quantity = %s WHERE product_id = %s",
+                "UPDATE Products SET Name = %s, Price = %s, StockQuantity = %s WHERE ProductID = %s",
                 (data['name'], data['price'], data['stock_quantity'], product_id)
             )
             conn.commit()
@@ -64,7 +64,7 @@ def delete_product(product_id):
     conn = get_connection()
     try:
         with conn.cursor() as cur:
-            cur.execute("DELETE FROM Products WHERE product_id = %s", (product_id,))
+            cur.execute("DELETE FROM Products WHERE ProductID = %s", (product_id,))
             conn.commit()
         return jsonify({"message": "Product deleted"}), 200
     finally:

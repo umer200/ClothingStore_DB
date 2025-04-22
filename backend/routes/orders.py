@@ -19,7 +19,7 @@ def get_order(order_id):
     conn = get_connection()
     try:
         with conn.cursor() as cur:
-            cur.execute("SELECT * FROM Orders WHERE order_id = %s", (order_id,))
+            cur.execute("SELECT * FROM Orders WHERE OrderID = %s", (order_id,))
             row = cur.fetchone()
         if row:
             return jsonify(row), 200
@@ -35,8 +35,8 @@ def create_order():
     try:
         with conn.cursor() as cur:
             cur.execute(
-                "INSERT INTO Orders (customer_id, order_date) VALUES (%s, %s)",
-                (data['customer_id'], data['order_date'])
+                "INSERT INTO Orders (OrderID, CustomerID, OrderDate, TotalAmount) VALUES (%s, %s, %s, %s)",
+                (data['order_id'], data['customer_id'], data['order_date'], int(data['total_amount']))
             )
             conn.commit()
             new_id = cur.lastrowid
@@ -51,7 +51,7 @@ def update_order(order_id):
     try:
         with conn.cursor() as cur:
             cur.execute(
-                "UPDATE Orders SET customer_id = %s, order_date = %s WHERE order_id = %s",
+                "UPDATE Orders SET CustomerID = %s, OrderDate = %s WHERE OrderID = %s",
                 (data['customer_id'], data['order_date'], order_id)
             )
             conn.commit()
@@ -64,7 +64,7 @@ def delete_order(order_id):
     conn = get_connection()
     try:
         with conn.cursor() as cur:
-            cur.execute("DELETE FROM Orders WHERE order_id = %s", (order_id,))
+            cur.execute("DELETE FROM Orders WHERE OrderID = %s", (order_id,))
             conn.commit()
         return jsonify({"message": "Order deleted"}), 200
     finally:

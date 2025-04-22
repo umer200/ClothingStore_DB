@@ -21,7 +21,7 @@ def get_customer(customer_id):
     conn = get_connection()
     try:
         with conn.cursor() as cur:
-            cur.execute("SELECT * FROM Customers WHERE customer_id = %s", (customer_id,))
+            cur.execute("SELECT * FROM Customers WHERE CustomerID = %s", (customer_id,))
             row = cur.fetchone()
             return jsonify(row if row else {}), 200 if row else 404
     finally:
@@ -35,8 +35,8 @@ def create_customer():
     try:
         with conn.cursor() as cur:
             cur.execute(
-                "INSERT INTO Customers (name, email, phone) VALUES (%s, %s, %s)",
-                (data['name'], data['email'], data['phone'])
+                "INSERT INTO Customers (CustomerID, Name, Email, Phone) VALUES (%s, %s, %s, %s)",
+                (int(data['id']), data['name'], data['email'], data['phone'])
             )
             conn.commit()
             return jsonify({"message": "Customer created", "customer_id": cur.lastrowid}), 201
@@ -51,7 +51,7 @@ def update_customer(customer_id):
     try:
         with conn.cursor() as cur:
             cur.execute(
-                "UPDATE Customers SET name = %s, email = %s, phone = %s WHERE customer_id = %s",
+                "UPDATE Customers SET Name = %s, Email = %s, Phone = %s WHERE CustomerID = %s",
                 (data['name'], data['email'], data['phone'], customer_id)
             )
             conn.commit()
@@ -65,7 +65,7 @@ def delete_customer(customer_id):
     conn = get_connection()
     try:
         with conn.cursor() as cur:
-            cur.execute("DELETE FROM Customers WHERE customer_id = %s", (customer_id,))
+            cur.execute("DELETE FROM Customers WHERE CustomerID = %s", (customer_id,))
             conn.commit()
             return jsonify({"message": "Customer deleted"}), 200
     finally:
