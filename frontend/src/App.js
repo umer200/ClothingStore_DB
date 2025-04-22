@@ -4,6 +4,7 @@ import Customers from './components/Customers';
 import Products from './components/Products';
 import Orders from './components/Orders';
 import OrderDetails from './components/OrderDetails';
+import Analytics from './components/Analytics';
 
 function App() {
   return (
@@ -13,14 +14,14 @@ function App() {
         <Link to="/products">Products</Link> |{" "}
         <Link to="/orders">Orders</Link> |{" "}
         <Link to="/orderdetails">OrderDetails</Link> |{" "}
-        {/*<Link to="/analytics">Analytics</Link>
-         <Route path="/analytics" element={<Analytics />} />*/}
+        <Link to="/analytics">Analytics</Link>
       </nav>
       <Routes>
         <Route path="/customers" element={<Customers />} />
         <Route path="/products" element={<Products />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/orderdetails" element={<OrderDetails />} />
+        <Route path="/analytics" element={<Analytics />} />
       </Routes>
     </Router>
   );

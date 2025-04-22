@@ -3,7 +3,7 @@ import api from '../api';
 
 function Products() {
   const [products, setProducts] = useState([]);
-  const [form, setForm] = useState({ name: '', price: '', stock_quantity: '' });
+  const [form, setForm] = useState({ id:'', name: '', price: '', stock_quantity: '' });
   const [editingId, setEditingId] = useState(null);
 
   const fetchProducts = async () => {
@@ -25,15 +25,15 @@ function Products() {
     if (editingId) {
       await api.put(`/products/${editingId}`, form);
     } else {
-      await api.post('/products', form);
+      await api.post('/products/', form);
     }
-    setForm({ name: '', price: '', stock_quantity: '' });
+    setForm({id:'', name: '', price: '', stock_quantity: '' });
     setEditingId(null);
     fetchProducts();
   };
 
   const handleEdit = p => {
-    setForm({ name: p.Name, price: p.Price, stock_quantity: p.StockQuantity });
+    setForm({ id: p.ProductID, name: p.Name, price: p.Price, stock_quantity: p.StockQuantity });
     setEditingId(p.ProductID);
   };
 
@@ -46,11 +46,12 @@ function Products() {
     <div style={{ padding: '20px' }}>
       <h2>Products</h2>
       <form onSubmit={handleSubmit}>
+        <input name="id" placeholder="ProductID" value={form.id} onChange={handleChange} required />
         <input name="name" placeholder="Name" value={form.name} onChange={handleChange} required />
         <input name="price" type="number" placeholder="Price" value={form.price} onChange={handleChange} required />
         <input name="stock_quantity" type="number" placeholder="Stock" value={form.stock_quantity} onChange={handleChange} required />
         <button type="submit">{editingId ? 'Update' : 'Add'} Product</button>
-        {editingId && <button onClick={() => { setEditingId(null); setForm({ name: '', price: '', stock_quantity: '' }); }}>Cancel</button>}
+        {editingId && <button onClick={() => { setEditingId(null); setForm({ id: '', name: '', price: '', stock_quantity: '' }); }}>Cancel</button>}
       </form>
 
       <table border="1" cellPadding="8" style={{ marginTop: '20px', width: '100%' }}>

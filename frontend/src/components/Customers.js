@@ -3,7 +3,7 @@ import api from '../api';
 
 function Customers() {
   const [customers, setCustomers] = useState([]);
-  const [form, setForm] = useState({ name: '', email: '', phone: '' });
+  const [form, setForm] = useState({id: '', name: '', email: '', phone: '' });
   const [editingId, setEditingId] = useState(null);
 
   // Fetch all customers
@@ -28,15 +28,15 @@ function Customers() {
     if (editingId) {
       await api.put(`/customers/${editingId}`, form);
     } else {
-      await api.post('/customers', form);
+      await api.post('/customers/', form);
     }
-    setForm({ name: '', email: '', phone: '' });
+    setForm({ id:'', name: '', email: '', phone: '' });
     setEditingId(null);
     fetchCustomers();
   };
 
   const handleEdit = customer => {
-    setForm({ name: customer.Name, email: customer.Email, phone: customer.Phone });
+    setForm({ id: customer.CustomerID, name: customer.Name, email: customer.Email, phone: customer.Phone });
     setEditingId(customer.CustomerID);
   };
 
@@ -49,14 +49,15 @@ function Customers() {
     <div style={{ padding: '20px' }}>
       <h2>Customers</h2>
       <form onSubmit={handleSubmit}>
+        <input name="id" placeholder="Customer ID" value={form.id} onChange={handleChange} required />
         <input name="name" placeholder="Name" value={form.name} onChange={handleChange} required />
         <input name="email" placeholder="Email" value={form.email} onChange={handleChange} required />
         <input name="phone" placeholder="Phone" value={form.phone} onChange={handleChange} required />
         <button type="submit">{editingId ? 'Update' : 'Add'} Customer</button>
         {editingId && <button onClick={() => {
-          setEditingId(null);
-          setForm({ name: '', email: '', phone: '' });
-        }}>Cancel</button>}
+            setEditingId(null);
+            setForm({ id: '', name: '', email: '', phone: '' });
+          }}>Cancel</button>}
       </form>
 
       <table border="1" cellPadding="8" style={{ marginTop: '20px', width: '100%' }}>

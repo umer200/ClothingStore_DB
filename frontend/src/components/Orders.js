@@ -4,7 +4,7 @@ import api from '../api';
 function Orders() {
   const [orders, setOrders] = useState([]);
   const [customers, setCustomers] = useState([]);
-  const [form, setForm] = useState({ customer_id: '', order_date: '' });
+  const [form, setForm] = useState({ order_id:'', customer_id: '', order_date: '', total_amount:'' });
   const [editingId, setEditingId] = useState(null);
 
   const fetchOrders = async () => {
@@ -32,9 +32,9 @@ function Orders() {
     if (editingId) {
       await api.put(`/orders/${editingId}`, form);
     } else {
-      await api.post('/orders', form);
+      await api.post('/orders/', form);
     }
-    setForm({ customer_id: '', order_date: '' });
+    setForm({ order_id:'', customer_id: '', order_date: '', total_amount:'' });
     setEditingId(null);
     fetchOrders();
   };
@@ -56,6 +56,7 @@ function Orders() {
     <div style={{ padding: '20px' }}>
       <h2>Orders</h2>
       <form onSubmit={handleSubmit}>
+      <input name="order_id" type="" placeholder="Order ID" value={form.order_id} onChange={handleChange} required />
         <select name="customer_id" value={form.customer_id} onChange={handleChange} required>
           <option value="">Select Customer</option>
           {customers.map(c => (
@@ -63,8 +64,9 @@ function Orders() {
           ))}
         </select>
         <input name="order_date" type="date" value={form.order_date} onChange={handleChange} required />
+        <input name="total_amount" type="" placeholder="Total Amount" value={form.total_amount} onChange={handleChange} required />
         <button type="submit">{editingId ? 'Update' : 'Add'} Order</button>
-        {editingId && <button onClick={() => { setEditingId(null); setForm({ customer_id: '', order_date: '' }); }}>Cancel</button>}
+        {editingId && <button onClick={() => { setEditingId(null); setForm({ order_id:'', customer_id: '', order_date: '', total_amount:'' }); }}>Cancel</button>}
       </form>
 
       <table border="1" cellPadding="8" style={{ marginTop: '20px', width: '100%' }}>
